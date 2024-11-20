@@ -1,0 +1,17 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider    = "prisma-client-js"
+  engineType  = "binary"
+}
+
+
+model User {
+  id        String  @id @default(uuid())
+  username  String 
+  email     String  
+  password  String 
+}
