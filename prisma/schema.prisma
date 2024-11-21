@@ -24,49 +24,43 @@ model User {
   email     String  
   password  String 
   categoria Categoria[]
-  produtos Produtos[]
-  imagens  Imagens[]
+  produtos  Produtos[]
+  imagens   Imagens[]
   opcoesProdutos   OpcoesProdutos[]
   produtoCategoria ProdutoCategoria[]
 }
 
-
-model Categoria{
-    id          String    @id @default(uuid())
-    nome        String 
-    slug        String
-    use_in_menu Boolean
-    user     User  @relation(fields: [userId], references: [id])
-    userId       String
+model Categoria {
+  id          String    @id @default(uuid())
+  nome        String 
+  slug        String
+  use_in_menu Boolean
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
 }
 
-model Produtos{
-
-    id          String    @id @default(uuid())
-    enabled     Boolean
-    name        String
-    slug        String
-    use_in_menu  Boolean
-    stock        Int
-    description String
-    price       Float
-    price_with_discount  Float
-
-    userId       String
-    user     User  @relation(fields: [userId], references: [id])
+model Produtos {
+  id                   String    @id @default(uuid())
+  enabled              Boolean
+  name                 String
+  slug                 String
+  use_in_menu          Boolean
+  stock                Int
+  description          String
+  price                Float
+  price_with_discount  Float
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id])
 }
 
-
-model Imagens{
-
-    id          String    @id @default(uuid())
-    product_id  Int
-    enabled     Boolean
-    path        String    
-    userId       String
-    user     User  @relation(fields: [userId], references: [id])
+model Imagens {
+  id          String    @id @default(uuid())
+  product_id  String
+  enabled     Boolean   @default(true)
+  path        String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id]) // Relacionamento com User
 }
-
 
 model OpcoesProdutos {
   id          Int     @id @default(autoincrement()) // Chave primária auto-incrementada
@@ -80,10 +74,10 @@ model OpcoesProdutos {
   user        User    @relation(fields: [userId], references: [id]) // Relacionamento com User
 }
 
-model ProdutoCategoria{
-    id          Int    @id @default(autoincrement())
-    categoria_id  Int
-    produto_id    Int
-    userId       String
-    user         User  @relation(fields: [userId], references: [id])
+model ProdutoCategoria {
+  id           Int    @id @default(autoincrement())
+  categoria_id Int
+  produto_id   Int
+  userId       String
+  user         User   @relation(fields: [userId], references: [id])
 }
