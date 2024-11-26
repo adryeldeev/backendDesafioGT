@@ -8,7 +8,7 @@ export const uploadImagem = async (req, res) => {
     try {
         const { product_id, userId } = req.body;
     
-        // Verifica se o produto existe
+        
         const product = await prisma.produtos.findUnique({
           where: { id: product_id },
         });
@@ -17,7 +17,7 @@ export const uploadImagem = async (req, res) => {
           return res.status(404).json({ error: "Produto não encontrado." });
         }
     
-        // Salva a imagem no banco de dados
+        
         const imagem = await prisma.imagens.create({
           data: {
             product_id,

@@ -85,13 +85,13 @@ export default {
   async updatePassword(req, res) {
     const { userId, currentPassword, newPassword } = req.body;
 
-    // Verificar se todos os campos estão presentes
+
     if (!currentPassword || !newPassword) {
       return res.status(400).json({ message: "Preencha todos os campos" });
     }
 
     try {
-      // Encontrar o usuário pelo ID (esse ID pode vir de um token JWT ou da requisição)
+
       const user = await prisma.user.findUnique({
         where: { id: userId }
       });

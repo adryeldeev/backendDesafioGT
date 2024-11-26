@@ -3,6 +3,7 @@ import multer from 'multer';
 import { uploadImagem } from '../Controllers/UploadImagemController.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import CategoriaController from '../Controllers/CategoriaController.js';
 
 // Necessário para trabalhar com o __dirname em ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -36,5 +37,12 @@ const upload = multer({
 const router = Router();
 
 router.post('/uploads', upload.single('imagem'), uploadImagem);
+
+
+router.get('/categoria',CategoriaController.getCategorias );
+router.get('/categoria/:id',CategoriaController.getCategoriaById );
+router.post('/createCategoria',CategoriaController.createCategoria);
+router.put('/updateCategoria/:id',CategoriaController.updateCategoria);
+router.delete('/deleteCategoria/:id',CategoriaController.deleteCategoria);
 
 export { router };
