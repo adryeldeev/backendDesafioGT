@@ -4,6 +4,9 @@ import { uploadImagem } from '../Controllers/UploadImagemController.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import CategoriaController from '../Controllers/CategoriaController.js';
+import { authenticate } from '../middlewares/auth.js';
+import UserController from '../Controllers/UserController.js';
+import ProdutosController from '../Controllers/ProdutosController.js';
 
 // Necessário para trabalhar com o __dirname em ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -38,11 +41,27 @@ const router = Router();
 
 router.post('/uploads', upload.single('imagem'), uploadImagem);
 
+//User
+router.post('/createUser', UserController.createUser)
+router.post('/login', UserController.loginUser)
+router.put('/updatePassword', UserController.updatePassword)
 
-router.get('/categoria',CategoriaController.getCategorias );
-router.get('/categoria/:id',CategoriaController.getCategoriaById );
-router.post('/createCategoria',CategoriaController.createCategoria);
-router.put('/updateCategoria/:id',CategoriaController.updateCategoria);
-router.delete('/deleteCategoria/:id',CategoriaController.deleteCategoria);
+//Produtos
+router.get('/produtos', authenticate, ProdutosController.getProdutos)
+router.get('/produtos/:id', authenticate, ProdutosController.getProductById)
+router.post('/createProduto', authenticate, ProdutosController.createProduct)
+router.put('/updateProduto/:id', authenticate, ProdutosController.updateProduct)
+router.delete('/deleteProduto/:id', authenticate, ProdutosController.deleteProduct)
+
+
+//categoria
+router.get('/categoria',authenticate,CategoriaController.getCategorias );
+router.get('/categoria/:id', authenticate,CategoriaController.getCategoriaById );
+router.post('/createCategoria',authenticate,CategoriaController.createCategoria);
+router.put('/updateCategoria/:id',authenticate,CategoriaController.updateCategoria);
+router.delete('/deleteCategoria/:id',authenticate,CategoriaController.deleteCategoria);
+
+
+
 
 export { router };
