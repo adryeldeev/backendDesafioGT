@@ -19,65 +19,74 @@ enum Type {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  username  String 
-  email     String  
-  password  String 
-  categoria Categoria[]
-  produtos  Produtos[]
-  imagens   Imagens[]
-  opcoesProdutos   OpcoesProdutos[]
-  produtoCategoria ProdutoCategoria[]
+  id                 String             @id @default(uuid())
+  username           String             @unique
+  email              String             @unique
+  password           String
+  categoria          Categoria[]
+  produtos           Produtos[]
+  imagens            Imagens[]
+  opcoesProdutos     OpcoesProdutos[]
+  produtoCategoria   ProdutoCategoria[]
 }
 
 model Categoria {
-  id          String    @id @default(uuid())
-  nome        String 
-  slug        String
-  use_in_menu Boolean
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
+  id                 String             @id @default(uuid())
+  nome               String
+  slug               String             @unique
+  use_in_menu        Boolean
+  userId             String
+  user               User               @relation(fields: [userId], references: [id])
+  produtoCategoria   ProdutoCategoria[]
 }
 
 model Produtos {
-  id                   String    @id @default(uuid())
-  enabled              Boolean
-  name                 String
-  slug                 String
-  use_in_menu          Boolean
-  stock                Int
-  description          String
-  price                Float
-  price_with_discount  Float
-  userId               String
-  user                 User      @relation(fields: [userId], references: [id])
+  id                 String             @id @default(uuid())
+  enabled            Boolean
+  name               String
+  slug               String             @unique
+  use_in_menu        Boolean
+  stock              Int
+  description        String
+  price              Float
+  price_with_discount Float
+  userId             String
+  user               User               @relation(fields: [userId], references: [id])
+  imagens            Imagens[]
+  produtoCategoria   ProdutoCategoria[]
+  opcoesProdutos     OpcoesProdutos[]
 }
 
 model Imagens {
-  id          String    @id @default(uuid())
-  product_id  String
-  enabled     Boolean   @default(true)
-  path        String
-  userId      String
-  user        User      @relation(fields: [userId], references: [id]) // Relacionamento com User
+  id                 String             @id @default(uuid())
+  product_id         String
+  enabled            Boolean            @default(true)
+  path               String
+  userId             String
+  user               User               @relation(fields: [userId], references: [id])
+  produto            Produtos?          @relation(fields: [product_id], references: [id])
 }
 
 model OpcoesProdutos {
-  id          Int     @id @default(autoincrement()) // Chave primária auto-incrementada
-  product_id  Int                                     // Chave estrangeira para a tabela de produtos
-  title       String                                  // Título obrigatório
-  shape       Shape?  @default(SQUARE)               // ENUM opcional com valor padrão "SQUARE"
-  radius      Int?    @default(0)                    // Valor opcional com padrão 0
-  type        Type?   @default(TEXT)                 // ENUM opcional com valor padrão "TEXT"
-  values      String                                 // Opções obrigatórias separadas por vírgula
-  userId      String                                 // Chave estrangeira para o usuário
-  user        User    @relation(fields: [userId], references: [id]) // Relacionamento com User
+  id                 Int                @id @default(autoincrement())
+  product_id         String
+  title              String
+  shape              Shape?             @default(SQUARE)
+  radius             Int?               @default(0)
+  type               Type?              @default(TEXT)
+  values             String
+  userId             String
+  user               User               @relation(fields: [userId], references: [id])
+  produto            Produtos           @relation(fields: [product_id], references: [id])
 }
 
 model ProdutoCategoria {
-  id           Int    @id @default(autoincrement())
-  categoria_id Int
-  produto_id   Int
-  userId       String
-  user         User   @relation(fields: [userId], references: [id])
+  id                 Int                @id @default(autoincrement())
+  categoria_id       String
+  produto_id         String
+  userId             String
+  user               User               @relation(fields: [userId], references: [id])
+  categoria          Categoria          @relation(fields: [categoria_id], references: [id])
+  produto            Produtos           @relation(fields: [produto_id], references: [id])
 }
+
